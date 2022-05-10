@@ -30,9 +30,10 @@ const useAuthProvider = () => {
 
     if (access_token) {
       Cookies.set("token", access_token, { expires: 5 });
+      axios.defaults.headers.Authorization = `Bearer ${access_token}`;
+      const { data: user } = await axios.get(endpoints.auth.profile);
+      setUser(user);
     }
-
-    return access_token;
   };
 
   return {
