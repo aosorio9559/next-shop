@@ -1,14 +1,28 @@
 import { LockClosedIcon } from "@heroicons/react/solid";
-import { useRef } from "react";
+import { useAuth } from "@hooks/useAuth";
+import { useRef, useState } from "react";
 
 export default function LoginPage() {
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
+  const auth = useAuth();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-  const handleLogin = (event) => {
+  const handleLogin = async (event) => {
+    setLoading(true);
     event.preventDefault();
     const email = emailRef.current.value;
     const password = passwordRef.current.value;
+
+    try {
+      await auth.login(email, password);
+      console.log("Login successful");
+    } catch (error) {
+      setError(error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -19,6 +33,11 @@ export default function LoginPage() {
             <img className="mx-auto h-12 w-auto" src="https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg" alt="Workflow" />
             <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">Sign in to your account</h2>
           </div>
+          {error && (
+            <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+              Wrong email or password
+            </div>
+          )}
           <form className="mt-8 space-y-6" onSubmit={handleLogin}>
             <input type="hidden" name="remember" defaultValue="true" />
             <div className="rounded-md shadow-sm -space-y-px">
@@ -73,11 +92,12 @@ export default function LoginPage() {
               <button
                 type="submit"
                 className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                disabled={loading}
               >
                 <span className="absolute left-0 inset-y-0 flex items-center pl-3">
                   <LockClosedIcon className="h-5 w-5 text-indigo-500 group-hover:text-indigo-400" aria-hidden="true" />
                 </span>
-                Sign in
+                {loading ? "Loading..." : "Sign In"}
               </button>
             </div>
           </form>
