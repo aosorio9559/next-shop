@@ -5,7 +5,11 @@
       "@styles/*": ["styles/*"],
       "@common/*": ["common/*"],
       "@components/*": ["components/*"],
-      "@layout/*": ["layout/*"]
-    }
+      "@layout/*": ["layout/*"],
+      "@services/*": ["services/*"],
+      "@hooks/*": ["hooks/*"]
+    },
+    "target": "es6",
+    "allowSyntheticDefaultImports": true
   }
 }
