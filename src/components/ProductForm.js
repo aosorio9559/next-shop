@@ -1,19 +1,26 @@
+import { addProduct } from "@services/api/products";
 import { useRef } from "react";
 
 export default function ProductForm() {
   const formRef = useRef(null);
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const formData = new FormData(formRef.current);
-    const data = {
+    const productData = {
       title: formData.get("title"),
       price: parseInt(formData.get("price"), 10),
       description: formData.get("description"),
       categoryId: parseInt(formData.get("category"), 10),
       images: [formData.get("images").name],
     };
-    console.log(data);
+
+    try {
+      const newProduct = await addProduct(productData);
+      console.log({ newProduct });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (

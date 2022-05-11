@@ -9,6 +9,7 @@
       "@services/*": ["services/*"],
       "@hooks/*": ["hooks/*"]
     },
-    "moduleResolution": "node"
+    "moduleResolution": "node",
+    "target": "ES6"
   }
 }

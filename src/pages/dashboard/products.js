@@ -1,11 +1,25 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { PlusIcon } from "@heroicons/react/solid";
 import Modal from "@common/Modal";
 import ProductForm from "@components/ProductForm";
+import { getAllProducts } from "@services/api/products";
 
 export default function Products() {
   const [products, setProducts] = useState([]);
   const [openModal, setOpenModal] = useState(false);
+
+  useEffect(() => {
+    const getProducts = async () => {
+      try {
+        const { data } = await getAllProducts();
+        setProducts(data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    getProducts();
+  }, []);
 
   return (
     <>
