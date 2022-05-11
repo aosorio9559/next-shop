@@ -7,6 +7,19 @@ export const endpoints = {
     profile: `${API}/api/${API_VERSION}/auth/profile`,
   },
   products: {
+    getProducts: (limit, offset) => `${API}/api/${API_VERSION}/products?limit=${limit}&offset=${offset}`,
     getProduct: (id) => `${API}/api/${API_VERSION}/products/${id}`,
+    addProduct: `${API}/api/${API_VERSION}/products`,
+    updateProduct: (id) => `${API}/api/${API_VERSION}/products/${id}/`,
+    deleteProduct: (id) => `${API}/api/${API_VERSION}/products/${id}/`,
+  },
+  categories: {
+    getCategoriesList: `${API}/api/${API_VERSION}/categories/`,
+    addCategory: `${API}/api/${API_VERSION}/categories/`,
+    getCategoryItems: (id) => `${API}/api/${API_VERSION}/categories/${id}/products/`,
+    updateCategory: (id) => `${API}/api/${API_VERSION}/categories/${id}/`,
+  },
+  files: {
+    addImage: `${API}/api/${API_VERSION}/files/upload/`,
   },
 };
