@@ -1,7 +1,6 @@
 import { Chart } from "@common/Chart";
 import { useFetch } from "@hooks/useFetch";
 import { endpoints } from "@services/api";
-import Products from "./products";
 
 export default function Dashboard() {
   const PRODUCT_LIMIT = 10;

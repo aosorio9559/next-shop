@@ -3,10 +3,13 @@ import { PlusIcon } from "@heroicons/react/solid";
 import Modal from "@common/Modal";
 import ProductForm from "@components/ProductForm";
 import { getAllProducts } from "@services/api/products";
+import { Alert } from "@common/Alert";
+import { useAlert } from "@hooks/useAlert";
 
 export default function Products() {
   const [products, setProducts] = useState([]);
   const [openModal, setOpenModal] = useState(false);
+  const { alert, setAlert, toggleAlert } = useAlert();
 
   useEffect(() => {
     const getProducts = async () => {
@@ -19,10 +22,11 @@ export default function Products() {
     };
 
     getProducts();
-  }, []);
+  }, [alert]);
 
   return (
     <>
+      <Alert alert={alert} handleClose={toggleAlert} />
       <div className="lg:flex lg:items-center lg:justify-between mb-8">
         <div className="flex-1 min-w-0">
           <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">
@@ -140,7 +144,7 @@ export default function Products() {
       </div>
 
       <Modal open={openModal} setOpen={setOpenModal}>
-        <ProductForm />
+        <ProductForm setOpen={setOpenModal} setAlert={setAlert} />
       </Modal>
     </>
   );

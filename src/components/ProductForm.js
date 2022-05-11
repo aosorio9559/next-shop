@@ -1,7 +1,7 @@
 import { addProduct } from "@services/api/products";
 import { useRef } from "react";
 
-export default function ProductForm() {
+export default function ProductForm({ setOpen, setAlert }) {
   const formRef = useRef(null);
 
   const handleSubmit = async (event) => {
@@ -16,10 +16,22 @@ export default function ProductForm() {
     };
 
     try {
-      const newProduct = await addProduct(productData);
-      console.log({ newProduct });
+      await addProduct(productData);
+      setAlert({
+        active: true,
+        message: "Product added successfully",
+        type: "success",
+        autoClose: false,
+      });
+
+      setOpen(false);
     } catch (error) {
-      console.log(error);
+      setAlert({
+        active: true,
+        message: error,
+        type: "error",
+        autoClose: false,
+      });
     }
   };
 
