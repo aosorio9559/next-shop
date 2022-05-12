@@ -25,7 +25,11 @@ const useAuthProvider = () => {
       },
     };
 
-    const { data } = await axios.post(endpoints.auth.login, { email, password }, options);
+    const { data } = await axios.post(
+      endpoints.auth.login,
+      { email, password },
+      options
+    );
     const { access_token } = data;
 
     if (access_token) {
@@ -36,8 +40,16 @@ const useAuthProvider = () => {
     }
   };
 
+  const logout = () => {
+    Cookies.remove("token");
+    setUser(null);
+    axios.defaults.headers.Authorization = null;
+    window.location.href = "/login";
+  };
+
   return {
     user,
     login,
+    logout,
   };
 };
