@@ -1,8 +1,10 @@
-import { addProduct } from "@services/api/products";
+import { addProduct, updateProduct } from "@services/api/products";
+import { useRouter } from "next/router";
 import { useRef } from "react";
 
-export default function ProductForm({ setOpen, setAlert }) {
+export default function ProductForm({ product, setOpen, setAlert }) {
   const formRef = useRef(null);
+  const router = useRouter();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -14,6 +16,19 @@ export default function ProductForm({ setOpen, setAlert }) {
       categoryId: parseInt(formData.get("category"), 10),
       images: [formData.get("images").name],
     };
+
+    /* Update product */
+    if (product) {
+      try {
+        await updateProduct(product.id, productData);
+        router.push("/dashboard/products");
+        console.log("Product updated");
+      } catch (error) {
+        console.log(error);
+      }
+
+      return;
+    }
 
     try {
       await addProduct(productData);
@@ -48,6 +63,7 @@ export default function ProductForm({ setOpen, setAlert }) {
                 Title
               </label>
               <input
+                defaultValue={product?.title}
                 type="text"
                 name="title"
                 id="title"
@@ -62,6 +78,7 @@ export default function ProductForm({ setOpen, setAlert }) {
                 Price
               </label>
               <input
+                defaultValue={product?.price}
                 type="number"
                 name="price"
                 id="price"
@@ -76,6 +93,7 @@ export default function ProductForm({ setOpen, setAlert }) {
                 Category
               </label>
               <select
+                defaultValue={product?.category?.id}
                 id="category"
                 name="category"
                 autoComplete="category-name"
@@ -97,6 +115,7 @@ export default function ProductForm({ setOpen, setAlert }) {
                 Description
               </label>
               <textarea
+                defaultValue={product?.description}
                 name="description"
                 id="description"
                 autoComplete="description"
