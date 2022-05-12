@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { PlusIcon } from "@heroicons/react/solid";
+import { PlusIcon, TrashIcon } from "@heroicons/react/solid";
 import Modal from "@common/Modal";
 import ProductForm from "@components/ProductForm";
-import { getAllProducts } from "@services/api/products";
+import { deleteProduct, getAllProducts } from "@services/api/products";
 import { Alert } from "@common/Alert";
 import { useAlert } from "@hooks/useAlert";
 
@@ -23,6 +23,25 @@ export default function Products() {
 
     getProducts();
   }, [alert]);
+
+  const handleDeleteProduct = async (id) => {
+    try {
+      await deleteProduct(id);
+      setAlert({
+        active: true,
+        type: "success",
+        message: "Product deleted successfully",
+        autoClose: false,
+      });
+    } catch (error) {
+      setAlert({
+        active: true,
+        type: "error",
+        message: error,
+        autoClose: false,
+      });
+    }
+  };
 
   return (
     <>
@@ -127,12 +146,10 @@ export default function Products() {
                         </a>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                        <a
-                          href="#"
-                          className="text-indigo-600 hover:text-indigo-900"
-                        >
-                          Delete
-                        </a>
+                        <TrashIcon
+                          className="flex-shrink-0 h6 w-6 text-gray-400 cursor-pointer"
+                          onClick={() => handleDeleteProduct(product.id)}
+                        />
                       </td>
                     </tr>
                   ))}

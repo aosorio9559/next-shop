@@ -1,6 +1,10 @@
 import axios from "axios";
 import { endpoints } from ".";
 
+export const getAllProducts = async () => {
+  return await axios.get(endpoints.products.getAllProducts);
+};
+
 export const addProduct = async (product) => {
   const config = {
     headers: {
@@ -18,6 +22,7 @@ export const addProduct = async (product) => {
   return data;
 };
 
-export const getAllProducts = async () => {
-  return await axios.get(endpoints.products.getAllProducts);
+export const deleteProduct = async (id) => {
+  const { data } = await axios.delete(endpoints.products.deleteProduct(id));
+  return data;
 };
